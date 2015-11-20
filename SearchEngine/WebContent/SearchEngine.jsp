@@ -5,12 +5,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Search Engine</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
 <script src="javascript/main.js" type="text/javascript">
-	</script>
+	
+</script>
 </head>
 <body>
-	<input id="searchBar" />
-	<input onclick="onClickOfSeachButton()" type="button" value="click"
-		id="searchButton" />
+	<h1 class="text-aling-center">CS 172: Project Phase II</h1>
+	<form action="search" method="get">
+		<input id="searchBar" type="text" name="query"/>
+		<input type="submit"
+			value="Search" id="searchButton" />
+	</form>
 </body>
 </html>
