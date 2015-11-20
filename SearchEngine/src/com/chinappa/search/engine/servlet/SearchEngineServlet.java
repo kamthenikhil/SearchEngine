@@ -42,7 +42,7 @@ public class SearchEngineServlet extends HttpServlet {
 		String query = request.getParameter("query");
 		WebSearchService searchService = new WebSearchService();
 		searchService.search(query);
-		System.out.println("query");
+		System.out.println(query);
 	}
 
 	/**
