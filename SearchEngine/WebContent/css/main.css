@@ -1,5 +1,11 @@
 @CHARSET "UTF-8";
 
+body {
+	background: #dfdfdf;
+	color: #666;
+	font: 14px/24px sans-serif;
+}
+
 h1 {
 	font-family: "Times New Roman", Times, serif;
 	color: blue;
@@ -7,4 +13,43 @@ h1 {
 
 .text-aling-center {
 	text-align: center;
+}
+
+.pagination {
+	background: #f2f2f2;
+	padding: 20px;
+	margin-bottom: 20px;
+}
+
+.paginationLink {
+	display: inline-block;
+	padding: 0px 9px;
+	margin-right: 4px;
+	border-radius: 3px;
+	border: solid 1px #c0c0c0;
+	background: #e9e9e9;
+	box-shadow: inset 0px 1px 0px rgba(255, 255, 255, .8), 0px 1px 3px
+		rgba(0, 0, 0, .1);
+	font-size: .875em;
+	font-weight: bold;
+	text-decoration: none;
+	color: #717171;
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 1);
+}
+
+.paginationLinkActive {
+	
+	display: inline-block;
+	padding: 0px 9px;
+	margin-right: 4px;
+	border-radius: 3px;
+	border: solid 1px #c0c0c0;
+	background: #616161;
+	font-size: .875em;
+	font-weight: bold;
+	text-decoration: none;
+	box-shadow: inset 0px 0px 8px rgba(0, 0, 0, .5), 0px 1px 0px
+		rgba(255, 255, 255, .8);
+	color: #f0f0f0;
+	text-shadow: 0px 0px 3px rgba(0, 0, 0, .5);
 }

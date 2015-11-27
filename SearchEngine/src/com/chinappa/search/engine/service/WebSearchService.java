@@ -1,13 +1,15 @@
 package com.chinappa.search.engine.service;
 
-import com.chinappa.search.engine.model.SearchResult;
+import java.util.List;
+
+import com.chinappa.search.engine.dto.SearchResult;
 
 public class WebSearchService {
 
-	public SearchResult[] search(String query){
+	public List<SearchResult> search(String query){
 		
 		WebIndexSercher indexSearcher = new WebIndexSercher();
-		SearchResult[] searchResults = indexSearcher.searchDocuments(query);
+		List<SearchResult> searchResults = indexSearcher.searchDocuments(query);
 		return searchResults;
 	}
 }
