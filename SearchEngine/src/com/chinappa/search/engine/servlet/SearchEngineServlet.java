@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.chinappa.search.engine.configuration.SearchEngineConfiguration;
 import com.chinappa.search.engine.dto.SearchResult;
+import com.chinappa.search.engine.dto.SearchResults;
 import com.chinappa.search.engine.service.WebSearchService;
 
 /**
@@ -52,29 +53,26 @@ public class SearchEngineServlet extends HttpServlet {
 			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		}
 		String query = request.getParameter("query");
-		List<SearchResult> searchResults = null;
-		if (request.getSession().getAttribute("query") != null
-				&& query.equals((String) request.getSession().getAttribute(
-						"query"))) {
-			searchResults = (List<SearchResult>) request.getSession()
-					.getAttribute("searchResults");
-		} else {
-			WebSearchService searchService = new WebSearchService();
-			searchResults = searchService.search(query);
-			request.getSession().setAttribute("searchResults", searchResults);
-		}
+		List<SearchResult> searchResultList = null;
+		// if (request.getSession().getAttribute("query") != null
+		// && query.equals((String) request.getSession().getAttribute(
+		// "query"))) {
+		// searchResultList = (List<SearchResult>) request.getSession()
+		// .getAttribute("searchResults");
+		// } else {
+		WebSearchService searchService = new WebSearchService();
+		SearchResults searchResults = searchService.search(query);
+		searchResultList = searchResults.getSearchResults();
+		request.getSession().setAttribute("searchResults", searchResultList);
+		request.setAttribute("resultSetLength",
+				searchResults.getEstimatedResultSetLength());
 
-		// if(request.getParameter("click")!=null){
-		// String linkClass = (String)request.getParameter("click");
-		// request.setAttribute("linkClass", linkClass);
-		// }
-
-		int numberOfRecords = searchResults.size();
+		int numberOfRecords = searchResultList.size();
 		int numberOfPages = (int) Math.ceil(numberOfRecords * 1.0
 				/ recordsPerPage);
 
 		List<SearchResult> filteredRecords = fetchCurrentPageRecords(
-				searchResults, pageNumber, recordsPerPage);
+				searchResultList, pageNumber, recordsPerPage);
 		request.setAttribute("pageNumber", pageNumber);
 		request.setAttribute("numberOfPages", numberOfPages);
 		request.setAttribute("numberOfRecords", numberOfRecords);

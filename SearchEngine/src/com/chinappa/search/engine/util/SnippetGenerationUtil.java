@@ -1,63 +1,92 @@
 package com.chinappa.search.engine.util;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+
 public class SnippetGenerationUtil {
 
-	public static int[] solve(int[][] lists) {
-		int m = lists.length;
-		// the current selected element from each list
-		int[] pos = new int[m];
-		// the current best solution positions
-		int[] sol = new int[m];
-		// the score (window length) of current solution
-		int currSol = Integer.MAX_VALUE;
+	public static int[] fetchMinimumWindow(Map<String, ArrayList<Integer>> termPosMap) {
+		ArrayList<String> relevantTermList = new ArrayList<String>();
+		for (Iterator<String> mapIterator = termPosMap.keySet().iterator(); mapIterator
+				.hasNext();) {
+			String key = mapIterator.next();
+			if (termPosMap.get(key).size() == 0) {
+				mapIterator.remove();
+			} else {
+				relevantTermList.add(key);
+			}
+		}
+
+		Integer currentWindowLength = Integer.MAX_VALUE;
+		int[] windowTerms = new int[termPosMap.size()];
+		for (int j = 0; j < windowTerms.length; j++) {
+			if (j == windowTerms.length - 1) {
+				windowTerms[j] = Integer.MAX_VALUE;
+			} else {
+				windowTerms[j] = 0;
+			}
+		}
+		int k = 0;
 		while (true) {
-			// select the list that has the increasing minimum element
-			int minList = argmin(pos, lists);
-			// if you can't increase the minimum, stop
-			if (minList == -1)
+			boolean temp = false;
+			for (int j = 0; j < termPosMap.size(); j++) {
+				ArrayList<Integer> positionVector = termPosMap
+						.get(relevantTermList.get(j));
+				if (positionVector.size() > 0 && positionVector.size() > k) {
+					temp = true;
+					int currentValue = windowTerms[j];
+					int newValue = positionVector.get(k);
+					windowTerms[j] = newValue;
+					int tempWindowLength = 0;
+					if ((tempWindowLength = fetchMinimumWindowLength(
+							windowTerms, currentWindowLength)) == currentWindowLength) {
+						windowTerms[j] = currentValue;
+					} else {
+						windowTerms[j] = newValue;
+						currentWindowLength = tempWindowLength;
+					}
+				}
+				k++;
+			}
+			if (!temp)
 				break;
-			// calculate the window size
-			int minValue = lists[minList][pos[minList]];
-			int maxValue = max(pos, lists);
-			int nextSol = maxValue - minValue;
-			// update the solution if necessary
-			if (nextSol < currSol) {
-				currSol = nextSol;
-				System.arraycopy(pos, 0, sol, 0, m);
-			}
-			// update the current minumum element
-			pos[minList]++;
 		}
-		return sol;
+		return windowTerms;
 	}
 
-	private static int argmin(int[] pos, int[][] v) {
-		int min = Integer.MAX_VALUE;
-		int arg = -1;
-		for (int i = 0; i < v.length; ++i) {
-			if (v[i][pos[i]] < min) {
-				min = v[i][pos[i]];
-				arg = i;
-			}
+	private static int fetchMinimumWindowLength(int[] windowTerms,
+			int currentWindowLength) {
+
+		int minimum = findMinimumElementOfArray(windowTerms);
+		int maximum = findMaximumElementOfArray(windowTerms);
+		if (maximum - minimum < currentWindowLength) {
+			return maximum - minimum;
+		} else {
+			return currentWindowLength;
 		}
-		return arg;
 	}
 
-	private static int argmax(int[] pos, int[][] v) {
-		int max = -1;
-		int arg = -1;
-		for (int i = 0; i < v.length; ++i) {
-			if (v[i][pos[i]] > max) {
-				max = v[i][pos[i]];
-				arg = i;
+	public static int findMaximumElementOfArray(int[] windowTerms) {
+
+		int maximumElement = Integer.MIN_VALUE;
+		for (int term : windowTerms) {
+			if (term > maximumElement) {
+				maximumElement = term;
 			}
 		}
-		return arg;
+		return maximumElement;
 	}
 
-	private static int max(int[] pos, int[][] v) {
-		int arg = argmax(pos, v);
-		return v[arg][pos[arg]];
+	public static int findMinimumElementOfArray(int[] windowTerms) {
+
+		int minimumElement = Integer.MAX_VALUE;
+		for (int term : windowTerms) {
+			if (term < minimumElement) {
+				minimumElement = term;
+			}
+		}
+		return minimumElement;
 	}
 
 }

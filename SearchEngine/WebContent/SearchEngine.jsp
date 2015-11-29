@@ -13,24 +13,43 @@
 </script>
 </head>
 <body>
-	<h1 class="text-aling-center">CS 172: Project Phase II</h1>
+	<h1 class="align-center">CS 172: Project Phase II</h1>
 	<form action="search" method="get">
-		<input id="searchBar" type="text" name="query"
+		<input id="searchBar" type="text" name="query" style="width: 400px"
+			onchange="submit()"
 			value="<%=request.getAttribute("query") == null ? "": request.getAttribute("query")%>" />
-		<input type="submit" value="Search" id="searchButton" />
+		<button type="submit" id="searchButton" style="width: 75px">Search</button>
 	</form>
+
 	<%
 		if(request
-		.getAttribute("filteredRecords")!=null){
-		List<SearchResult> results = (List<SearchResult>) request
-		.getAttribute("filteredRecords");
+			.getAttribute("resultSetLength")!=null){
+			long resultSetLength = (long) request
+			.getAttribute("resultSetLength");
+	%>
+	<p class="align-center">
+		Showing
+		<%=resultSetLength%>
+		results
+	</p>
+	<%
+		}
+	%>
+
+	<%
+		if(request
+			.getAttribute("filteredRecords")!=null){
+			List<SearchResult> results = (List<SearchResult>) request
+			.getAttribute("filteredRecords");
 	%>
 	<%
 		for(int i=0;i<results.size();i++){
 	%>
 	<br>
-	<a href="<%=results.get(i).getUrl()%>" target="_blank"><%=results.get(i).getTitle()%></a>
-	<p href="<%=results.get(i).getUrl()%>" target="_blank"><%=results.get(i).getSnippet()%></p>
+	<div class="align-center">
+		<a href="<%=results.get(i).getUrl()%>" target="_blank"><%=results.get(i).getTitle()%></a>
+		<p><%=results.get(i).getSnippet()%></p>
+	</div>
 	<%
 		}
 	%>
@@ -40,9 +59,9 @@
 
 	<%
 		if(request
-			.getAttribute("pageNumber")!=null){
-			int pageNumber = (int)request
-			.getAttribute("pageNumber");
+		.getAttribute("pageNumber")!=null){
+		int pageNumber = (int)request
+		.getAttribute("pageNumber");
 	%>
 
 	<%--For displaying Page numbers.
@@ -57,12 +76,13 @@
 						<c:param name="click" value="previous" />
 					</c:url>
 				</c:set>
-				<td><a class="paginationLink" href="${pageURL}">Previous</a></td>
+				<td><a class="paginationLink" href="${pageURL}"
+					style="width: 50px">Previous</a></td>
 			</c:if>
 			<c:forEach begin="1" end="${numberOfPages}" var="i">
 				<c:choose>
 					<c:when test="${pageNumber eq i}">
-						<td><a class="paginationLinkActive">${i}</a></td>
+						<td><a class="paginationLinkActive" style="width: 15px">${i}</a></td>
 					</c:when>
 					<c:otherwise>
 						<c:set var="pageURL">
@@ -71,7 +91,8 @@
 								<c:param name="query" value="${query}" />
 							</c:url>
 						</c:set>
-						<td><a href="${pageURL}" class="paginationLink">${i}</a></td>
+						<td><a href="${pageURL}" class="paginationLink"
+							style="width: 15px">${i}</a></td>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
@@ -83,7 +104,8 @@
 						<c:param name="click" value="next" />
 					</c:url>
 				</c:set>
-				<td><a class="paginationLink" href="${pageURL}">Next</a></td>
+				<td><a class="paginationLink" href="${pageURL}"
+					style="width: 25px">Next</a></td>
 			</c:if>
 		</tr>
 	</table>

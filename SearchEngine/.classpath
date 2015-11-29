@@ -14,5 +14,10 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/InformationRetrieval"/>
+	<classpathentry kind="var" path="THIRD_PARTY_JARS/jsoup-1.8.3.jar"/>
+	<classpathentry kind="var" path="THIRD_PARTY_JARS/jstl-1.2.jar"/>
+	<classpathentry kind="var" path="THIRD_PARTY_JARS/lucene-analyzers-3.6.0.jar"/>
+	<classpathentry kind="var" path="THIRD_PARTY_JARS/lucene-core-3.6.0.jar"/>
+	<classpathentry kind="var" path="THIRD_PARTY_JARS/lucene-queryparser-3.6.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
