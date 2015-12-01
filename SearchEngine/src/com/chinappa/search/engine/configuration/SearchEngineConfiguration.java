@@ -1,5 +1,6 @@
 package com.chinappa.search.engine.configuration;
 
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -21,9 +22,17 @@ public class SearchEngineConfiguration {
 	/**
 	 * Stores URL to document file mappings.
 	 */
-	private Properties properties = null;
-	
-	private SearchEngineConfiguration(){
+	private Properties mappings = null;
+	/**
+	 * Stores URL to page ranking.
+	 */
+	private Properties pageranks = null;
+	/**
+	 * Stores dictionary.
+	 */
+	private ArrayList<String> dictionary = null;
+
+	private SearchEngineConfiguration() {
 		init();
 	}
 
@@ -57,8 +66,12 @@ public class SearchEngineConfiguration {
 		param = SearchEngineConstants.RB_DOCUMENT_DIRECTORY;
 		documentDirectory = FileHandlerUtil.readStringFromResourceBundle(rb,
 				param);
-		properties = FileHandlerUtil.readFromPropertiesFile(documentDirectory,
+		mappings = FileHandlerUtil.readFromPropertiesFile(documentDirectory,
 				CommonConstants.DEFAULT_MAPPINGS_FILENAME);
+		pageranks = FileHandlerUtil.readFromPropertiesFile(documentDirectory,
+				CommonConstants.DEFAULT_PAGERANK_FILENAME);
+		dictionary = FileHandlerUtil.readFile("/home/nikhil/Work/git/SearchEngine/SearchEngine/config/dictionary");
+		System.out.println("Hola");
 	}
 
 	public String getIndexLocation() {
@@ -77,11 +90,27 @@ public class SearchEngineConfiguration {
 		this.documentDirectory = documentDirectory;
 	}
 
-	public Properties getProperties() {
-		return properties;
+	public Properties getMappings() {
+		return mappings;
 	}
 
-	public void setProperties(Properties properties) {
-		this.properties = properties;
+	public void setMappings(Properties properties) {
+		this.mappings = properties;
+	}
+
+	public Properties getPageranks() {
+		return pageranks;
+	}
+
+	public void setPageranks(Properties pageranks) {
+		this.pageranks = pageranks;
+	}
+
+	public ArrayList<String> getDictionary() {
+		return dictionary;
+	}
+
+	public void setDictionary(ArrayList<String> dictionary) {
+		this.dictionary = dictionary;
 	}
 }

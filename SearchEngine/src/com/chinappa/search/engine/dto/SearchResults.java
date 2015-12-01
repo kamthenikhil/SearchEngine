@@ -8,6 +8,8 @@ public class SearchResults {
 	private long estimatedResultSetLength = 0;
 
 	private List<SearchResult> searchResults = new ArrayList<SearchResult>();
+	
+	private String correctedQuery = null;
 
 	public long getEstimatedResultSetLength() {
 		return estimatedResultSetLength;
@@ -23,5 +25,13 @@ public class SearchResults {
 
 	public void setSearchResults(List<SearchResult> searchResults) {
 		this.searchResults = searchResults;
+	}
+
+	public String getCorrectedQuery() {
+		return correctedQuery;
+	}
+
+	public void setCorrectedQuery(String correctedQuery) {
+		this.correctedQuery = correctedQuery;
 	}
 }

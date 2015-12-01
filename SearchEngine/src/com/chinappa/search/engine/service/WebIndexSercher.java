@@ -31,6 +31,7 @@ import com.chinappa.information.retrieval.util.FileHandlerUtil;
 import com.chinappa.search.engine.configuration.SearchEngineConfiguration;
 import com.chinappa.search.engine.dto.SearchResult;
 import com.chinappa.search.engine.dto.SearchResults;
+import com.chinappa.search.engine.util.LevenshteinDistanceUtil;
 
 public class WebIndexSercher {
 
@@ -57,8 +58,40 @@ public class WebIndexSercher {
 			searcher.setDefaultFieldSortScoring(true, false);
 
 			ScoreDoc[] hits = collector.topDocs().scoreDocs;
+			// Properties pageranks =
+			// SearchEngineConfiguration.getInstance().getPageranks();
+			// List<ScoreDoc>
+			// for(int i=0;i<hits.length;i++){
+			// int docId = hits[i].doc;
+			// Document document = searcher.doc(docId);
+			// String url = document.get(CommonConstants.INDEX_FIELD);
+			// float pageRank =
+			// pageranks.get(url)==null?0:Float.parseFloat((String)pageranks.get(url));
+			// pageRank *= 10000;
+			// float score = hits[i].score;
+			// System.out.println(pageRank+score);
+			// }
+
 			Map<String, ArrayList<Integer>> termPosMap = new HashMap<String, ArrayList<Integer>>();
 			String[] queryTerms = queryString.split("\\s+");
+			StringBuilder correctedQuery = new StringBuilder();
+			boolean errorDetected = false;
+			for (String queryTerm : queryTerms) {
+				String topmatch = LevenshteinDistanceUtil.getTopMatch(
+						queryTerm, SearchEngineConfiguration.getInstance()
+								.getDictionary());
+				System.out.println(topmatch);
+				if (topmatch != null) {
+					correctedQuery.append(topmatch);
+					errorDetected = true;
+				} else {
+					correctedQuery.append(queryTerm);
+				}
+				correctedQuery.append(CommonConstants.SPACE);
+			}
+			if (errorDetected) {
+				searchResults.setCorrectedQuery(correctedQuery.toString());
+			}
 			searchResults.setEstimatedResultSetLength(hits.length);
 			// fetchEstimatedResultSetLength(queryTerms, reader)
 			for (int i = 0; i < hits.length; ++i) {
@@ -99,12 +132,12 @@ public class WebIndexSercher {
 			Map<String, ArrayList<Integer>> termPosMap, String[] queryTerms,
 			int docId, Document document) throws IOException {
 		String htmlData = FileHandlerUtil
-				.fetchFromCompressedHTMLFile(
+				.fetchFromHTMLFile(
 						SearchEngineConfiguration.getInstance()
 								.getDocumentDirectory(),
 						SearchEngineConfiguration
 								.getInstance()
-								.getProperties()
+								.getMappings()
 								.getProperty(
 										document.get(CommonConstants.INDEX_FIELD)));
 		org.jsoup.nodes.Document doc = Jsoup.parse(htmlData);

@@ -16,31 +16,50 @@
 	<h1 class="align-center">CS 172: Project Phase II</h1>
 	<form action="search" method="get">
 		<input id="searchBar" type="text" name="query" style="width: 400px"
-			onchange="submit()"
 			value="<%=request.getAttribute("query") == null ? "": request.getAttribute("query")%>" />
 		<button type="submit" id="searchButton" style="width: 75px">Search</button>
 	</form>
 
 	<%
 		if(request
-			.getAttribute("resultSetLength")!=null){
-			long resultSetLength = (long) request
-			.getAttribute("resultSetLength");
+		.getAttribute("resultSetLength")!=null){
+		long resultSetLength = (long) request
+		.getAttribute("resultSetLength");
 	%>
 	<p class="align-center">
 		Showing
 		<%=resultSetLength%>
 		results
 	</p>
+
+	<%
+		}
+	%>
+	<%
+		if(request
+		.getAttribute("suggestedQuery")!=null){
+		String suggestedQuery = (String) request
+		.getAttribute("suggestedQuery");
+	%>
+	<c:set var="pageURL">
+		<c:url value="search">
+			<c:param name="query" value="${suggestedQuery}" />
+		</c:url>
+	</c:set>
+	<p class="align-center">
+		Did you mean "<a class="paginationLink" href="${pageURL}"
+			style="width: 25px"><%=suggestedQuery%></a>"?
+	</p>
+
 	<%
 		}
 	%>
 
 	<%
 		if(request
-			.getAttribute("filteredRecords")!=null){
-			List<SearchResult> results = (List<SearchResult>) request
-			.getAttribute("filteredRecords");
+		.getAttribute("filteredRecords")!=null){
+		List<SearchResult> results = (List<SearchResult>) request
+		.getAttribute("filteredRecords");
 	%>
 	<%
 		for(int i=0;i<results.size();i++){
@@ -59,9 +78,9 @@
 
 	<%
 		if(request
-		.getAttribute("pageNumber")!=null){
-		int pageNumber = (int)request
-		.getAttribute("pageNumber");
+			.getAttribute("pageNumber")!=null){
+			int pageNumber = (int)request
+			.getAttribute("pageNumber");
 	%>
 
 	<%--For displaying Page numbers.

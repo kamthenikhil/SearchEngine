@@ -66,6 +66,8 @@ public class SearchEngineServlet extends HttpServlet {
 		request.getSession().setAttribute("searchResults", searchResultList);
 		request.setAttribute("resultSetLength",
 				searchResults.getEstimatedResultSetLength());
+		request.setAttribute("suggestedQuery",
+				searchResults.getCorrectedQuery());
 
 		int numberOfRecords = searchResultList.size();
 		int numberOfPages = (int) Math.ceil(numberOfRecords * 1.0
