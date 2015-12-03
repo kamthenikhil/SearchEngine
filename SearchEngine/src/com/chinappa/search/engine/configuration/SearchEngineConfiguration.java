@@ -32,6 +32,8 @@ public class SearchEngineConfiguration {
 	 */
 	private ArrayList<String> dictionary = null;
 
+	private String dictionaryFilepath = null;
+
 	private SearchEngineConfiguration() {
 		init();
 	}
@@ -66,12 +68,14 @@ public class SearchEngineConfiguration {
 		param = SearchEngineConstants.RB_DOCUMENT_DIRECTORY;
 		documentDirectory = FileHandlerUtil.readStringFromResourceBundle(rb,
 				param);
+		param = SearchEngineConstants.RB_DICTIONARY_FILEPATH;
+		dictionaryFilepath = FileHandlerUtil.readStringFromResourceBundle(rb,
+				param);
 		mappings = FileHandlerUtil.readFromPropertiesFile(documentDirectory,
 				CommonConstants.DEFAULT_MAPPINGS_FILENAME);
 		pageranks = FileHandlerUtil.readFromPropertiesFile(documentDirectory,
 				CommonConstants.DEFAULT_PAGERANK_FILENAME);
-		dictionary = FileHandlerUtil.readFile("/home/nikhil/Work/git/SearchEngine/SearchEngine/config/dictionary");
-		System.out.println("Hola");
+		dictionary = FileHandlerUtil.readFile(dictionaryFilepath);
 	}
 
 	public String getIndexLocation() {
@@ -112,5 +116,13 @@ public class SearchEngineConfiguration {
 
 	public void setDictionary(ArrayList<String> dictionary) {
 		this.dictionary = dictionary;
+	}
+
+	public String getDictionaryFilepath() {
+		return dictionaryFilepath;
+	}
+
+	public void setDictionaryFilepath(String dictionaryFilepath) {
+		this.dictionaryFilepath = dictionaryFilepath;
 	}
 }

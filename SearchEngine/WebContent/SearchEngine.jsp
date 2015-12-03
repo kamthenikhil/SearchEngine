@@ -47,8 +47,7 @@
 		</c:url>
 	</c:set>
 	<p class="align-center">
-		Did you mean "<a class="paginationLink" href="${pageURL}"
-			style="width: 25px"><%=suggestedQuery%></a>"?
+		Did you mean "<a href="${pageURL}" style="width: 25px"><%=suggestedQuery%></a>"?
 	</p>
 
 	<%
@@ -66,7 +65,8 @@
 	%>
 	<br>
 	<div class="align-center">
-		<a href="<%=results.get(i).getUrl()%>" target="_blank"><%=results.get(i).getTitle()%></a>
+		<a href="<%=results.get(i).getUrl()%>" target="_blank"><%=results.get(i).getTitle()%></a><br/>
+		<a><%=results.get(i).getUrl().substring(0, results.get(i).getUrl().length()<100?results.get(i).getUrl().length():100)%>..</a>
 		<p><%=results.get(i).getSnippet()%></p>
 	</div>
 	<%
